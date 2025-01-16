@@ -15,27 +15,25 @@
 
         .dashboard {
             display: flex;
+            flex-direction: row;
             gap: 20px;
             max-width: 1400px;
             margin: 0 auto;
         }
 
+        .map {
+            width: 80%;
+        }
+
         .controls {
+            width: 20%;
             flex: 1;
             background: white;
-            padding: 20px;
+            padding: 15px;
             border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
             overflow-y: auto;
             max-height: 90vh;
-        }
-
-        .map-container {
-            flex: 2;
-            background: white;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
         }
 
         .slider-container {
@@ -46,18 +44,19 @@
             display: block;
             margin-bottom: 5px;
             font-weight: bold;
-            font-size: 14px;
+            font-size: 12px;
         }
 
         .slider-value {
             float: right;
             color: #666;
-            font-size: 14px;
+            font-size: 12px;
         }
 
         input[type="range"] {
             width: 100%;
-            margin: 10px 0;
+            height: 4px;
+            margin: 5px 0;
         }
 
         #map {
@@ -69,8 +68,8 @@
 
         .parameter-group {
             border-bottom: 1px solid #eee;
-            padding-bottom: 15px;
-            margin-bottom: 15px;
+            padding-bottom: 10px;
+            margin-bottom: 10px;
         }
 
         .parameter-group:last-child {
@@ -81,81 +80,84 @@
 
 <body>
     <div class="dashboard">
+        <div class="map">
+            <!--TODO: Put Your Map There -->
+        </div>
+
         <div class="controls">
-            <h2>Environmental Parameters</h2>
+            <h3>Environmental Parameters</h3>
 
             <!-- Checkbox for each parameter -->
             <div class="parameter-group">
-                <label><input type="checkbox" id="2mTemperatureCheckbox" checked onclick="toggleSlider('2m_temperature')"> 2m Temperature (°C)</label>
-                <label><input type="checkbox" id="soilTemperatureCheckbox" checked onclick="toggleSlider('soil_temperature_level_2')"> Soil Temperature Level 2 (°C)</label>
-                <label><input type="checkbox" id="evapCheckbox" checked onclick="toggleSlider('evaporation_from_bare_soil')"> Evaporation from Bare Soil (mm/day)</label>
-                <label><input type="checkbox" id="radiationCheckbox" checked onclick="toggleSlider('surface_net_solar_radiation')"> Surface Net Solar Radiation (W/m²)</label>
-                <label><input type="checkbox" id="precipCheckbox" checked onclick="toggleSlider('total_precipitation')"> Total Precipitation (mm/day)</label>
+                <label><input type="checkbox" id="temperatureCheckbox" checked onclick="toggleSlider('temperature')"> 2m
+                    Temperature (°C)</label>
+                <label><input type="checkbox" id="soilEvapCheckbox" checked onclick="toggleSlider('soilEvap')">
+                    Evaporation
+                    from Bare Soil (mm/day)</label>
+                <label><input type="checkbox" id="radiationCheckbox" checked onclick="toggleSlider('radiation')">
+                    Surface Net Solar Radiation (W/m²)</label>
+                <label><input type="checkbox" id="precipCheckbox" checked onclick="toggleSlider('precip')"> Total
+                    Precipitation (mm/day)</label>
             </div>
 
             <!-- Sliders to be displayed based on checkbox -->
-            <div class="parameter-group" id="2m_temperature">
+            <div class="parameter-group" id="temperature">
                 <div class="slider-container">
                     <label>2m Temperature (°C)</label>
-                    <span class="slider-value" id="2mTemperatureValue">20°C</span>
-                    <input type="range" id="2mTemperatureSlider" min="-20" max="40" value="20">
+                    <span class="slider-value" id="temperatureValue">20°C</span>
+                    <input type="range" id="temperatureSlider" min="-20" max="40" value="20">
                 </div>
             </div>
 
-            <div class="parameter-group" id="soil_temperature_level_2">
-                <div class="slider-container">
-                    <label>Soil Temperature Level 2 (°C)</label>
-                    <span class="slider-value" id="soilTemperatureLevel2Value">15°C</span>
-                    <input type="range" id="soilTemperatureLevel2Slider" min="-10" max="40" value="15">
-                </div>
-            </div>
-
-            <div class="parameter-group" id="evaporation_from_bare_soil">
+            <div class="parameter-group" id="soilEvap">
                 <div class="slider-container">
                     <label>Evaporation from Bare Soil (mm/day)</label>
-                    <span class="slider-value" id="evaporationFromBareSoilValue">2.0 mm</span>
-                    <input type="range" id="evaporationFromBareSoilSlider" min="0" max="10" step="0.1" value="2.0">
+                    <span class="slider-value" id="soilEvapValue">2.0 mm</span>
+                    <input type="range" id="soilEvapSlider" min="0" max="10" step="0.1" value="2.0">
                 </div>
             </div>
 
-            <div class="parameter-group" id="surface_net_solar_radiation">
+            <div class="parameter-group" id="radiation">
                 <div class="slider-container">
                     <label>Surface Net Solar Radiation (W/m²)</label>
-                    <span class="slider-value" id="surfaceNetSolarRadiationValue">200 W/m²</span>
-                    <input type="range" id="surfaceNetSolarRadiationSlider" min="0" max="1000" value="200">
+                    <span class="slider-value" id="radiationValue">200 W/m²</span>
+                    <input type="range" id="radiationSlider" min="0" max="1000" value="200">
                 </div>
             </div>
 
-            <div class="parameter-group" id="total_precipitation">
+            <div class="parameter-group" id="precip">
                 <div class="slider-container">
                     <label>Total Precipitation (mm/day)</label>
-                    <span class="slider-value" id="totalPrecipitationValue">0.0 mm</span>
-                    <input type="range" id="totalPrecipitationSlider" min="0" max="100" step="0.1" value="0.0">
+                    <span class="slider-value" id="precipValue">0.0 mm</span>
+                    <input type="range" id="precipSlider" min="0" max="100" step="0.1" value="0.0">
                 </div>
             </div>
 
             <!-- Additional hidden parameters with checkboxes for toggling -->
             <div class="parameter-group">
-                <label><input type="checkbox" id="dewpointCheckbox" onclick="toggleSlider('2m_dewpoint_temperature')"> 2m Dewpoint Temperature (°C)</label>
-                <label><input type="checkbox" id="snowCheckbox" onclick="toggleSlider('snow_cover')"> Snow Cover (cm)</label>
-                <label><input type="checkbox" id="runoffCheckbox" onclick="toggleSlider('runoff')"> Runoff (mm/day)</label>
-                <label><input type="checkbox" id="totalEvapCheckbox" onclick="toggleSlider('total_evaporation')"> Total Evaporation (mm/day)</label>
+                <label><input type="checkbox" id="dewpointCheckbox" onclick="toggleSlider('dewpoint')"> 2m Dewpoint
+                    Temperature (°C)</label>
+                <label><input type="checkbox" id="snowCheckbox" onclick="toggleSlider('snow')"> Snow Cover (cm)</label>
+                <label><input type="checkbox" id="runoffCheckbox" onclick="toggleSlider('runoff')"> Runoff
+                    (mm/day)</label>
+                <label><input type="checkbox" id="totalEvapCheckbox" onclick="toggleSlider('totalEvap')"> Total
+                    Evaporation (mm/day)</label>
             </div>
 
             <!-- Hidden Sliders -->
-            <div class="parameter-group" id="2m_dewpoint_temperature" style="display:none;">
+            <div class="parameter-group" id="dewpoint" style="display:none;">
                 <div class="slider-container">
                     <label>2m Dewpoint Temperature (°C)</label>
-                    <span class="slider-value" id="2mDewpointTemperatureValue">15°C</span>
-                    <input type="range" id="2mDewpointTemperatureSlider" min="-20" max="30" value="15">
+                    <span class="slider-value" id="dewpointValue">15°C</span>
+                    <input type="range" id="dewpointSlider" min="-20" max="30" value="15">
                 </div>
             </div>
 
-            <div class="parameter-group" id="snow_cover" style="display:none;">
+            <div class="parameter-group" id="snow" style="display:none;">
                 <div class="slider-container">
                     <label>Snow Cover (cm)</label>
-                    <span class="slider-value" id="snowCoverValue">0 cm</span>
-                    <input type="range" id="snowCoverSlider" min="0" max="100" value="0">
+                    <span class="slider-value" id="snowValue">0 cm</span>
+                    <input type="range" id="snowSlider" min="0" max="100" value="0">
                 </div>
             </div>
 
@@ -167,18 +169,21 @@
                 </div>
             </div>
 
-            <div class="parameter-group" id="total_evaporation" style="display:none;">
+            <div class="parameter-group" id="totalEvap" style="display:none;">
                 <div class="slider-container">
                     <label>Total Evaporation (mm/day)</label>
-                    <span class="slider-value" id="totalEvaporationValue">3.0 mm</span>
-                    <input type="range" id="totalEvaporationSlider" min="0" max="20" step="0.1" value="3.0">
+                    <span class="slider-value" id="totalEvapValue">3.0 mm</span>
+                    <input type="range" id="totalEvapSlider" min="0" max="20" step="0.1" value="3.0">
                 </div>
             </div>
 
-            <button id="submitButton">Submit</button>
+            <div>
+                <span id="yied-result"> Result: </span>
+            </div>
         </div>
     </div>
-    <script src="hidden_slider.js"></script>
+
+    <script src="./slider_event.js"></script>
 </body>
 
 </html>
