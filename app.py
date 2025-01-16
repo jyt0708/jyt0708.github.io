@@ -1,50 +1,35 @@
 from flask import Flask, request, jsonify
+from flask_cors import CORS
+import numpy as np
+# import joblib  # If you're using a pre-trained model (e.g., from scikit-learn or similar)
 
 app = Flask(__name__)
+CORS(app)
 
+#TODO: Load your trained machine learning model
+# model = joblib.load('path_to_your_model.pkl')
 
-@app.route('/process-sliders', methods=['POST'])
-def process_sliders():
-    data = request.json
-    dewpoint = data['dewpoint']
-    temperature = data['temperature']
-    soil_temp = data['soilTemp']
+@app.route('/predict-yield', methods=['GET'])
+def predict_yield():
+    slider_values = request.args.to_dict()
+    
+    # for test
+    print(f"slider_values: {slider_values}")
 
-    return jsonify({"result": result})
+    # Convert slider values to the appropriate data types (e.g., float, int)
+    try:
+        slider_values = {key: float(value) for key, value in slider_values.items()}
+    except ValueError as e:
+        return jsonify({"error": "Invalid input data", "message": str(e)}), 400
 
-@app.route('/fetch-data', methods=['GET'])
-def fetch_data():
-    # Retrieve slider values from query parameters
-    dewpoint = request.args.get('dewpoint')
-    temperature = request.args.get('temperature')
-    soil_temp = request.args.get('soilTemp')
-    snow = request.args.get('snow')
-    soil_evap = request.args.get('soilEvap')
-    radiation = request.args.get('radiation')
-    runoff = request.args.get('runoff')
-    total_evap = request.args.get('totalEvap')
-    precip = request.args.get('precip')
-    district = request.args.get('district')
+    #TODO: replace this with your model
+    # prediction = model.prediction(slider_values.values())
+    prediction = sum(slider_values.values()) 
 
-    # Example: Query the database using these values (mocked here)
-    # Replace this with your actual database logic
-    data = {
-        "dewpoint": dewpoint,
-        "temperature": temperature,
-        "soil_temp": soil_temp,
-        "snow": snow,
-        "soil_evap": soil_evap,
-        "radiation": radiation,
-        "runoff": runoff,
-        "total_evap": total_evap,
-        "precip": precip,
-        "district": district,
-    }
+    # for test
+    print(f"prediction: {prediction}")
 
-    print(data);
-
-    return jsonify(data)
-
+    return jsonify({"prediction": prediction})
 
 if __name__ == '__main__':
     app.run(debug=True)
