@@ -1,56 +1,122 @@
-// Function to update the value of a slider and display it
-function updateSliderValue(sliderId, valueId) {
+// Function to toggle visibility of sliders based on checkbox status
+function toggleSlider(sliderId) {
     const slider = document.getElementById(sliderId);
-    const valueLabel = document.getElementById(valueId);
-    valueLabel.textContent = slider.value + (sliderId === "2mTemperatureSlider" || sliderId === "soilTemperatureLevel2Slider" ? "°C" :
-        sliderId === "evaporationFromBareSoilSlider" || sliderId === "totalEvaporationSlider" || sliderId === "runoffSlider" || sliderId === "snowCoverSlider" ? " mm" :
-        sliderId === "surfaceNetSolarRadiationSlider" ? " W/m²" : " mm/day");
-}
-
-// Function to show or hide sliders based on checkbox selection
-function toggleSlider(parameterId) {
-    const checkbox = document.getElementById(parameterId + "Checkbox");
-    const slider = document.getElementById(parameterId);
-
+    const checkbox = document.getElementById(sliderId + 'Checkbox');
     if (checkbox.checked) {
-        slider.style.display = "block";
+        slider.style.display = 'block';
     } else {
-        slider.style.display = "none";
+        slider.style.display = 'none';
     }
 }
 
-// Initialize the sliders and checkbox events
-document.addEventListener('DOMContentLoaded', () => {
-    // Initialize all sliders with their values
-    updateSliderValue("2mTemperatureSlider", "2mTemperatureValue");
-    updateSliderValue("soilTemperatureLevel2Slider", "soilTemperatureLevel2Value");
-    updateSliderValue("evaporationFromBareSoilSlider", "evaporationFromBareSoilValue");
-    updateSliderValue("surfaceNetSolarRadiationSlider", "surfaceNetSolarRadiationValue");
-    updateSliderValue("totalPrecipitationSlider", "totalPrecipitationValue");
-    updateSliderValue("2mDewpointTemperatureSlider", "2mDewpointTemperatureValue");
-    updateSliderValue("snowCoverSlider", "snowCoverValue");
-    updateSliderValue("runoffSlider", "runoffValue");
-    updateSliderValue("totalEvaporationSlider", "totalEvaporationValue");
+// Function to update slider values
+function updateSliderValue(sliderId, value) {
+    const valueDisplay = document.getElementById(sliderId + 'Value');
+    valueDisplay.textContent = value;
+}
 
-    // Attach event listeners to each slider to update values when changed
-    document.getElementById("2mTemperatureSlider").addEventListener('input', () => updateSliderValue("2mTemperatureSlider", "2mTemperatureValue"));
-    document.getElementById("soilTemperatureLevel2Slider").addEventListener('input', () => updateSliderValue("soilTemperatureLevel2Slider", "soilTemperatureLevel2Value"));
-    document.getElementById("evaporationFromBareSoilSlider").addEventListener('input', () => updateSliderValue("evaporationFromBareSoilSlider", "evaporationFromBareSoilValue"));
-    document.getElementById("surfaceNetSolarRadiationSlider").addEventListener('input', () => updateSliderValue("surfaceNetSolarRadiationSlider", "surfaceNetSolarRadiationValue"));
-    document.getElementById("totalPrecipitationSlider").addEventListener('input', () => updateSliderValue("totalPrecipitationSlider", "totalPrecipitationValue"));
-    document.getElementById("2mDewpointTemperatureSlider").addEventListener('input', () => updateSliderValue("2mDewpointTemperatureSlider", "2mDewpointTemperatureValue"));
-    document.getElementById("snowCoverSlider").addEventListener('input', () => updateSliderValue("snowCoverSlider", "snowCoverValue"));
-    document.getElementById("runoffSlider").addEventListener('input', () => updateSliderValue("runoffSlider", "runoffValue"));
-    document.getElementById("totalEvaporationSlider").addEventListener('input', () => updateSliderValue("totalEvaporationSlider", "totalEvaporationValue"));
+/**
+ * Retrieves the current values of all sliders on the page.
+ * 
+ * @returns {Object<string, string>} An object where the keys are slider IDs and the values are their current values.
+ */
+function getAllSliderValues() {
 
-    // Initialize checkbox events for showing or hiding sliders
-    document.getElementById("2mTemperatureCheckbox").addEventListener('change', () => toggleSlider('2m_temperature'));
-    document.getElementById("soilTemperatureCheckbox").addEventListener('change', () => toggleSlider('soil_temperature_level_2'));
-    document.getElementById("evapCheckbox").addEventListener('change', () => toggleSlider('evaporation_from_bare_soil'));
-    document.getElementById("radiationCheckbox").addEventListener('change', () => toggleSlider('surface_net_solar_radiation'));
-    document.getElementById("precipCheckbox").addEventListener('change', () => toggleSlider('total_precipitation'));
-    document.getElementById("dewpointCheckbox").addEventListener('change', () => toggleSlider('2m_dewpoint_temperature'));
-    document.getElementById("snowCheckbox").addEventListener('change', () => toggleSlider('snow_cover'));
-    document.getElementById("runoffCheckbox").addEventListener('change', () => toggleSlider('runoff'));
-    document.getElementById("totalEvapCheckbox").addEventListener('change', () => toggleSlider('total_evaporation'));
+    const sliderValues = {};
+
+    // Select all input sliders in the document
+    const sliders = document.querySelectorAll('input[type="range"]');
+
+    sliders.forEach(slider => {
+        const sliderId = slider.id;
+        const value = slider.value;
+        sliderValues[sliderId] = value;
+    });
+
+    return sliderValues;
+}
+
+async function getPrediction() {
+    const sliderValues = getAllSliderValues();
+    const queryString = new URLSearchParams(sliderValues).toString();
+
+    try {
+        // Send a GET request to the Flask server with the query parameters
+        const response = await fetch(`http://localhost:5000/predict-yield?${queryString}`, {
+            method: "GET",
+        });
+
+        // Check if the response is successful
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        // For test
+        console.log("Prediction Data:", data);
+
+        if (data.prediction !== undefined) {
+            document.getElementById('yied-result').innerText = `Result: ${data.prediction}`;
+        } else {
+            console.error("Prediction not found in the response:", data);
+        }
+
+    } catch (error) {
+        // Log any errors that occur during the fetch process
+        console.error("Error fetching data:", error);
+    }
+}
+
+// Add event listeners to each slider for updating the displayed value
+document.addEventListener('DOMContentLoaded', function () {
+    toggleSlider('temperature');
+    toggleSlider('soilEvap');
+    toggleSlider('radiation');
+    toggleSlider('precip');
+    toggleSlider('dewpoint');
+    toggleSlider('snow');
+    toggleSlider('runoff');
+    toggleSlider('totalEvap');
+
+    // Update value when sliders are moved
+    document.getElementById('temperatureSlider').addEventListener('input', function () {
+        updateSliderValue('temperature', this.value + '°C');
+        getPrediction();
+    });
+
+    document.getElementById('soilEvapSlider').addEventListener('input', function () {
+        updateSliderValue('soilEvap', this.value + ' mm');
+        getPrediction();
+    });
+
+    document.getElementById('radiationSlider').addEventListener('input', function () {
+        updateSliderValue('radiation', this.value + ' W/m²');
+        getPrediction();
+    });
+
+    document.getElementById('precipSlider').addEventListener('input', function () {
+        updateSliderValue('precip', this.value + ' mm');
+        getPrediction();
+    });
+
+    document.getElementById('dewpointSlider').addEventListener('input', function () {
+        updateSliderValue('dewpoint', this.value + '°C');
+        getPrediction();
+    });
+
+    document.getElementById('snowSlider').addEventListener('input', function () {
+        updateSliderValue('snow', this.value + ' cm');
+        getPrediction();
+    });
+
+    document.getElementById('runoffSlider').addEventListener('input', function () {
+        updateSliderValue('runoff', this.value + ' mm');
+        getPrediction();
+    });
+
+    document.getElementById('totalEvapSlider').addEventListener('input', function () {
+        updateSliderValue('totalEvap', this.value + ' mm');
+        getPrediction();
+    });
 });
