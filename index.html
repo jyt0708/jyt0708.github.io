@@ -1,183 +1,126 @@
 <!DOCTYPE html>
-<html lang="en">
-
+<html>
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crop Yield Dashboard</title>
+    <title>Interactive Germany Map - Cropped</title>
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
     <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 20px;
-            background-color: #f5f5f5;
-        }
-
-        .dashboard {
-            display: flex;
-            gap: 20px;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .controls {
-            flex: 1;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-            overflow-y: auto;
-            max-height: 90vh;
-        }
-
-        .slider-container {
-            margin-bottom: 20px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            font-size: 12px;
-        }
-
-        .slider-value {
-            float: right;
-            color: #666;
-            font-size: 12px;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            height: 4px;
-            margin: 5px 0;
-        }
-
         #map {
-            width: 100%;
-            height: 700px;
-            background-color: #f8f8f8;
-            object-fit: contain;
+            height: 600px;
+            width: 50%;
+            margin-left: 0;
+            display: inline-block;
+        }
+        #info-box-container {
+            position: absolute;
+            top: 60px; /* Adjust as needed */
+            left: 10px;
+            display: flex;
+            flex-direction: column;
+            gap: 5px; /* Compact spacing between boxes */
+            max-width: 200px; /* Limit width for compactness */
+            z-index: 1000; /* Ensure it's above other elements */
+        }
+        #district-dropdown {
+            max-height: 150px; /* Limit the height */
+            overflow-y: auto;  /* Enable vertical scrolling */
+            width: 200px;      /* Adjust width if necessary */
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            padding: 5px;
         }
 
-        .parameter-group {
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
+        .info-box {
+            padding: 8px;
+            border: 1px solid #ccc;
+            background: #ffffff;
+            box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.1);
+            font-family: Arial, sans-serif;
+            font-size: 12px;
+            line-height: 1.4;
+            overflow-wrap: break-word; /* Handle long district names */
+        }
+
+        .info-box strong {
+            display: block;
+            font-size: 14px;
+            margin-bottom: 3px;
+            text-align: left;
+            color: #333;
+        }
+
+        .info-box span {
+            font-size: 12px;
+            color: #555;
+        }
+
+        #slider-container {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 250px;
+            background: #f9f9f9;
+            border: 1px solid #ccc;
+            padding: 15px;
+            font-family: Arial, sans-serif;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        #slider-container label {
+            display: block;
+            margin-top: 10px;
+        }
+        #select-all-btn, #deselect-all-btn {
             margin-bottom: 10px;
+            padding: 8px 16px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-family: Arial, sans-serif;
         }
-
-        .parameter-group:last-child {
-            border-bottom: none;
+        #deselect-all-btn {
+            background-color: #dc3545;
+        }
+        #select-all-btn:hover {
+            background-color: #0056b3;
+        }
+        #deselect-all-btn:hover {
+            background-color: #c82333;
         }
     </style>
 </head>
-
 <body>
-    <div class="dashboard">
-        <div class="map">
-            <!--TODO: Put Your Map There -->
-        </div>
+    <div id="map"></div>
+    <div id="info-box-container" style="position: absolute; top: 10px; left: 10px;"></div>
+    <div id="info-box"></div>
+    <div id="slider-container">
+        <button id="select-all-btn">Select All</button>
+        <button id="deselect-all-btn">Deselect All</button>
 
-        <div class="controls">
-            <h3>Environmental Parameters</h3>
+        <label for="temperature-slider">Temperature:</label>
+        <input type="range" id="temperature-slider" min="5" max="30" value="12" />
+        <span id="temperature-value">12&degC</span>
 
-            <!-- Checkbox for each parameter -->
-            <div class="parameter-group">
-                <label><input type="checkbox" id="temperatureCheckbox" checked onclick="toggleSlider('temperature')"> 2m
-                    Temperature (°C)</label>
-                <label><input type="checkbox" id="soilEvapCheckbox" checked onclick="toggleSlider('soilEvap')">
-                    Evaporation
-                    from Bare Soil (mm/day)</label>
-                <label><input type="checkbox" id="radiationCheckbox" checked onclick="toggleSlider('radiation')">
-                    Surface Net Solar Radiation (W/m²)</label>
-                <label><input type="checkbox" id="precipCheckbox" checked onclick="toggleSlider('precip')"> Total
-                    Precipitation (mm/day)</label>
-            </div>
+        <label for="humidity-slider">Humidity</label>
+        <input type="range" id="humidity-slider" min="0" max="100" value="60" />
+        <span id="humidity-value">60%</span>
 
-            <!-- Sliders to be displayed based on checkbox -->
-            <div class="parameter-group" id="temperature">
-                <div class="slider-container">
-                    <label>2m Temperature (°C)</label>
-                    <span class="slider-value" id="temperatureValue">20°C</span>
-                    <input type="range" id="temperatureSlider" min="-20" max="40" value="20">
-                </div>
-            </div>
+        <label for="precipitation-slider">Rainfall:</label>
+        <input type="range" id="precipitation-slider" min="0" max="100" value="35" />
+        <span id="precipitation-value">35 mm</span>
 
-            <div class="parameter-group" id="soilEvap">
-                <div class="slider-container">
-                    <label>Evaporation from Bare Soil (mm/day)</label>
-                    <span class="slider-value" id="soilEvapValue">2.0 mm</span>
-                    <input type="range" id="soilEvapSlider" min="0" max="10" step="0.1" value="2.0">
-                </div>
-            </div>
+        <label for="radiation-slider">Solar Radiation:</label>
+        <input type="range" id="radiation-slider" min="0" max="50" value="5" />
+        <span id="radiation-value">5 W/m<sup>2</sup></span>
 
-            <div class="parameter-group" id="radiation">
-                <div class="slider-container">
-                    <label>Surface Net Solar Radiation (W/m²)</label>
-                    <span class="slider-value" id="radiationValue">200 W/m²</span>
-                    <input type="range" id="radiationSlider" min="0" max="1000" value="200">
-                </div>
-            </div>
+        <label for="district-dropdown">Select District:</label>
+        <select id="district-dropdown">
+            <option value="">-- Select a District --</option>
+        </select>
 
-            <div class="parameter-group" id="precip">
-                <div class="slider-container">
-                    <label>Total Precipitation (mm/day)</label>
-                    <span class="slider-value" id="precipValue">0.0 mm</span>
-                    <input type="range" id="precipSlider" min="0" max="100" step="0.1" value="0.0">
-                </div>
-            </div>
-
-            <!-- Additional hidden parameters with checkboxes for toggling -->
-            <div class="parameter-group">
-                <label><input type="checkbox" id="dewpointCheckbox" onclick="toggleSlider('dewpoint')"> 2m Dewpoint
-                    Temperature (°C)</label>
-                <label><input type="checkbox" id="snowCheckbox" onclick="toggleSlider('snow')"> Snow Cover (cm)</label>
-                <label><input type="checkbox" id="runoffCheckbox" onclick="toggleSlider('runoff')"> Runoff
-                    (mm/day)</label>
-                <label><input type="checkbox" id="totalEvapCheckbox" onclick="toggleSlider('totalEvap')"> Total
-                    Evaporation (mm/day)</label>
-            </div>
-
-            <!-- Hidden Sliders -->
-            <div class="parameter-group" id="dewpoint" style="display:none;">
-                <div class="slider-container">
-                    <label>2m Dewpoint Temperature (°C)</label>
-                    <span class="slider-value" id="dewpointValue">15°C</span>
-                    <input type="range" id="dewpointSlider" min="-20" max="30" value="15">
-                </div>
-            </div>
-
-            <div class="parameter-group" id="snow" style="display:none;">
-                <div class="slider-container">
-                    <label>Snow Cover (cm)</label>
-                    <span class="slider-value" id="snowValue">0 cm</span>
-                    <input type="range" id="snowSlider" min="0" max="100" value="0">
-                </div>
-            </div>
-
-            <div class="parameter-group" id="runoff" style="display:none;">
-                <div class="slider-container">
-                    <label>Runoff (mm/day)</label>
-                    <span class="slider-value" id="runoffValue">1.0 mm</span>
-                    <input type="range" id="runoffSlider" min="0" max="50" step="0.1" value="1.0">
-                </div>
-            </div>
-
-            <div class="parameter-group" id="totalEvap" style="display:none;">
-                <div class="slider-container">
-                    <label>Total Evaporation (mm/day)</label>
-                    <span class="slider-value" id="totalEvapValue">3.0 mm</span>
-                    <input type="range" id="totalEvapSlider" min="0" max="20" step="0.1" value="3.0">
-                </div>
-            </div>
-
-            <div>
-                <span id="yied-result"> Result: </span>
-            </div>
-        </div>
     </div>
+<script src="{{ url_for('static', filename='script.js') }}"></script>
 
-    <script src="./slider_event.js"></script>
 </body>
-
 </html>
