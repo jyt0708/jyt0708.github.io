@@ -1,0 +1,12 @@
+Name,Var,Start Month,End Month
+spring barley,sb,3,8
+winter barley,wb,9,7
+grain maize,grain_maize,4,10
+silage maize,silage_maize,4,9
+oats,oats,3,8
+potatoes,potat_tot,4,10
+winter rape,wrape,8,7
+rye,rye,9,8
+sugarbeet,sugarbeet,3,11
+triticale,triticale,9,8
+winter wheat,ww,9,8

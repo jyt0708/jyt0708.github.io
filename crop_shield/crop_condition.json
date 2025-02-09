@@ -1,0 +1,125 @@
+{
+  "crops": {
+    "spring_barley": {
+      "2m_dewpoint_temperature": {"min": 5, "max": 15},
+      "2m_temperature": {"min": 12, "max": 22},
+      "soil_temperature_level_2": {"min": 8, "max": 18},
+      "snow_cover": {"min": 0, "max": 10},
+      "evaporation_from_bare_soil": {"min": 0, "max": 0.05},
+      "surface_net_solar_radiation": {"min": 2000000, "max": 4000000},
+      "runoff": {"min": 0, "max": 0.002},
+      "total_evaporation": {"min": 0, "max": 0.05},
+      "total_precipitation": {"min": 0.5, "max": 1.5}
+    },
+    "winter_barley": {
+      "2m_dewpoint_temperature": {"min": 4, "max": 10},
+      "2m_temperature": {"min": 5, "max": 15},
+      "soil_temperature_level_2": {"min": 4, "max": 12},
+      "snow_cover": {"min": 5, "max": 25},
+      "evaporation_from_bare_soil": {"min": 0, "max": 0.03},
+      "surface_net_solar_radiation": {"min": 1500000, "max": 3000000},
+      "runoff": {"min": 0, "max": 0.001},
+      "total_evaporation": {"min": 0, "max": 0.03},
+      "total_precipitation": {"min": 0.3, "max": 1.2}
+    },
+    "grain_maize": {
+      "2m_dewpoint_temperature": {"min": 15, "max": 25},
+      "2m_temperature": {"min": 20, "max": 35},
+      "soil_temperature_level_2": {"min": 18, "max": 30},
+      "snow_cover": {"min": 0, "max": 5},
+      "evaporation_from_bare_soil": {"min": 0.03, "max": 0.10},
+      "surface_net_solar_radiation": {"min": 3000000, "max": 6000000},
+      "runoff": {"min": 0, "max": 0.003},
+      "total_evaporation": {"min": 0, "max": 0.06},
+      "total_precipitation": {"min": 0.4, "max": 1.0}
+    },
+    "silage_maize": {
+      "2m_dewpoint_temperature": {"min": 15, "max": 25},
+      "2m_temperature": {"min": 20, "max": 30},
+      "soil_temperature_level_2": {"min": 18, "max": 28},
+      "snow_cover": {"min": 0, "max": 5},
+      "evaporation_from_bare_soil": {"min": 0, "max": 0.12},
+      "surface_net_solar_radiation": {"min": 3500000, "max": 7000000},
+      "runoff": {"min": 0, "max": 0.002},
+      "total_evaporation": {"min": 0, "max": 0.05},
+      "total_precipitation": {"min": 0.4, "max": 1.0}
+    },
+    "oats": {
+      "2m_dewpoint_temperature": {"min": 7, "max": 18},
+      "2m_temperature": {"min": 10, "max": 20},
+      "soil_temperature_level_2": {"min": 10, "max": 15},
+      "snow_cover": {"min": 0, "max": 20},
+      "evaporation_from_bare_soil": {"min": 0, "max": 0.04},
+      "surface_net_solar_radiation": {"min": 1500000, "max": 3000000},
+      "runoff": {"min": 0, "max": 0.002},
+      "total_evaporation": {"min": 0, "max": 0.04},
+      "total_precipitation": {"min": 0.5, "max": 1.5}
+    },
+    "potatoes": {
+      "2m_dewpoint_temperature": {"min": 0, "max": 18},
+      "2m_temperature": {"min": 15, "max": 25},
+      "soil_temperature_level_2": {"min": 12, "max": 20},
+      "snow_cover": {"min": 0, "max": 5},
+      "evaporation_from_bare_soil": {"min": 0, "max": 0.07},
+      "surface_net_solar_radiation": {"min": 2000000, "max": 4000000},
+      "runoff": {"min": 0, "max": 0.002},
+      "total_evaporation": {"min": 0, "max": 0.05},
+      "total_precipitation": {"min": 0.3, "max": 1.2}
+    },
+    "winter_rape": {
+      "2m_dewpoint_temperature": {"min": 5, "max": 12},
+      "2m_temperature": {"min": 5, "max": 15},
+      "soil_temperature_level_2": {"min": 5, "max": 10},
+      "snow_cover": {"min": 10, "max": 30},
+      "evaporation_from_bare_soil": {"min": 0, "max": 0.03},
+      "surface_net_solar_radiation": {"min": 1500000, "max": 3000000},
+      "runoff": {"min": 0, "max": 0.001},
+      "total_evaporation": {"min": 0, "max": 0.03},
+      "total_precipitation": {"min": 0.3, "max": 1.0}
+    },
+    "rye": {
+      "2m_dewpoint_temperature": {"min": 4, "max": 12},
+      "2m_temperature": {"min": 5, "max": 15},
+      "soil_temperature_level_2": {"min": 5, "max": 12},
+      "snow_cover": {"min": 0, "max": 10},
+      "evaporation_from_bare_soil": {"min": 0, "max": 0.03},
+      "surface_net_solar_radiation": {"min": 1500000, "max": 3000000},
+      "runoff": {"min": 0, "max": 0.002},
+      "total_evaporation": {"min": 0, "max": 0.03},
+      "total_precipitation": {"min": 0.4, "max": 1.0}
+    },
+    "sugarbeet": {
+      "2m_dewpoint_temperature": {"min": 8, "max": 18},
+      "2m_temperature": {"min": 15, "max": 25},
+      "soil_temperature_level_2": {"min": 12, "max": 22},
+      "snow_cover": {"min": 0, "max": 5},
+      "evaporation_from_bare_soil": {"min": 0, "max": 0.10},
+      "surface_net_solar_radiation": {"min": 2500000, "max": 5000000},
+      "runoff": {"min": 0, "max": 0.003},
+      "total_evaporation": {"min": 0, "max": 0.05},
+      "total_precipitation": {"min": 0.4, "max": 1.0}
+    },
+    "triticale": {
+      "2m_dewpoint_temperature": {"min": 5, "max": 12},
+      "2m_temperature": {"min": 7, "max": 18},
+      "soil_temperature_level_2": {"min": 8, "max": 18},
+      "snow_cover": {"min": 0, "max": 20},
+      "evaporation_from_bare_soil": {"min": -0.01, "max": 0.04},
+      "surface_net_solar_radiation": {"min": 1500000, "max": 3500000},
+      "runoff": {"min": 0, "max": 0.002},
+      "total_evaporation": {"min": 0, "max": 0.04},
+      "total_precipitation": {"min": 0.3, "max": 1.5}
+    },
+    "winter_wheat": {
+      "2m_dewpoint_temperature": {"min": 5, "max": 12},
+      "2m_temperature": {"min": 10, "max": 15},
+      "soil_temperature_level_2": {"min": 6, "max": 12},
+      "snow_cover": {"min": 10, "max": 25},
+      "evaporation_from_bare_soil": {"min": -0.01, "max": 0.04},
+      "surface_net_solar_radiation": {"min": 1500000, "max": 3500000},
+      "runoff": {"min": 0, "max": 0.002},
+      "total_evaporation": {"min": 0, "max": 0.04},
+      "total_precipitation": {"min": 0.4, "max": 1.2}
+    }
+  }
+}
