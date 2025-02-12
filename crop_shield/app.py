@@ -8,10 +8,12 @@ import numpy as np
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
 
-
 @app.route('/geojson/<path:filename>')
 def serve_geojson(filename):
-    return send_from_directory(os.getcwd(), filename)
+    current_file = os.path.abspath(__file__)
+    current_directory = os.path.dirname(current_file)
+    return send_from_directory(current_directory, filename)
+
 
 # Function to parse month name into a number
 def parse_month(month):

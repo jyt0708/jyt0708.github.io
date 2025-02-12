@@ -175,9 +175,6 @@ async function sendMessage() {
 */
 
 
-
-
-
 // Fetch GeoJSON and add layers
 fetch('http://127.0.0.1:5000/geojson/merged_counties_all.geojson')
     .then(response => response.json())
