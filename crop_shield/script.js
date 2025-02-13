@@ -125,55 +125,6 @@ const cropColors = {
     "Rye": "#457b9d",
     "Canola": "#f94144"
 };
-/*
-
-let isChatFirstOpened = true; // Flag to check if the chat box is being opened for the first time
-
-function toggleChat() {
-    const chatBox = document.querySelector('.chat-box');
-    chatBox.style.display = chatBox.style.display === 'none' || chatBox.style.display === '' ? 'flex' : 'none';
-}
-
-function handleEnter(event) {
-    if (event.key === "Enter") {
-        sendMessage();
-    }
-}
-
-async function sendMessage() {
-    console.log('send message');
-    const input = document.querySelector('.chat-input input');
-    const messagesDiv = document.querySelector('.chat-messages');
-
-    if (input.value.trim() !== '') {
-        const userMessage = input.value.trim();
-        const userMessageElem = document.createElement('p');
-        userMessageElem.textContent = 'You: ' + userMessage;
-        messagesDiv.appendChild(userMessageElem);
-
-        // Send user message to the Flask backend
-        const response = await fetch("http://127.0.0.1:5000/chat", {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({ message: userMessage })
-        });
-
-        const data = await response.json();
-        const botMessageElem = document.createElement('p');
-
-        // Replace newlines with <br> to render line breaks in HTML
-        botMessageElem.innerHTML = 'Bot: ' + data.response.replace(/\n/g, '<br>');
-
-        setTimeout(() => messagesDiv.appendChild(botMessageElem), 500);
-
-        input.value = '';
-        messagesDiv.scrollTop = messagesDiv.scrollHeight;
-    }
-}
-*/
-
 
 // Fetch GeoJSON and add layers
 fetch('http://127.0.0.1:5000/geojson/merged_counties_all.geojson')

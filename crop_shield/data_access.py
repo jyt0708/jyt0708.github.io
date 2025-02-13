@@ -3,7 +3,7 @@ from collections import defaultdict
 
 def create_city_mapping():
     city_mapping = {}
-    with open('List_of _the_cities.csv', mode='r', newline='', encoding='utf-8') as file:
+    with open('crop_shield/List_of _the_cities.csv', mode='r', newline='', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         for row in reader:
             city_code = row["district_no"]
@@ -14,7 +14,7 @@ def create_city_mapping():
 
 def get_cities():
     cities = []
-    with open('List_of _the_cities.csv', mode='r', newline='', encoding='utf-8') as file:
+    with open('crop_shield/List_of _the_cities.csv', mode='r', newline='', encoding='utf-8') as file:
         reader = csv.DictReader(file)
         for row in reader:
             city_name = row["district"].split(',')[0].strip()
@@ -47,7 +47,7 @@ def calculate_city_averages(month_range, city_code):
     print("We are at caculate city averages.")
     # Open the JSON file and load the data
     jason_data = None
-    with open('merged_result.json','r') as file:
+    with open('crop_shield/merged_result.json','r') as file:
         json_data = file.read()  # Read the file content as a string
 
     # Now use json.loads() to convert the string into a Python dictionary

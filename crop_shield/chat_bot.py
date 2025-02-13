@@ -190,7 +190,7 @@ def get_response(crop, weather, city, start_month, end_month):
             # Fetch city climate data
             print(f"City {city} and Crop {crop} dected, start month: {start_month}, end month: {end_month}")
             city_climate_data = calculate_city_averages((start_month, end_month), city_code)
-            crop_ranges_list = convert_json_to_dict('crop_condition.json')
+            crop_ranges_list = convert_json_to_dict('crop_shield/crop_condition.json')
             crop_requirement_list = parse_crop_requirements(crop_ranges_list)
 
             # Check suitability
@@ -199,7 +199,7 @@ def get_response(crop, weather, city, start_month, end_month):
             # Format response
             good_conditions = ", ".join(result['conditions_met'])
             bad_conditions = ", ".join(
-                f"{item['parameter']} (actual: {item['actual_value']}, required: {item['required_range'][0]} to {item['required_range'][1]})"
+                f"{item['parameter']} (Actual: {item['actual_value']}. Required: {item['required_range'][0]} to {item['required_range'][1]})"
                 for item in result['conditions_failed']
             )
 
@@ -222,7 +222,8 @@ def get_response(crop, weather, city, start_month, end_month):
             bad_verb = "is" if len(result['conditions_failed']) == 1 else "are"
 
             return (f"Suitability score of growing {result['crop']} in {city}: {result['suitability_score']:.2f}. \n"
-                    f"The {good_conditions} {good_verb} good, but the {bad_conditions} condition {bad_verb} not good.")
+                    f"\nThe {good_conditions} {good_verb} good. \n"
+                    f"\nThe {bad_conditions} condition {bad_verb} not good.")
         except FileNotFoundError as e:
             print(e)
             return f"Error accessing data: {e}"

@@ -15,7 +15,8 @@
             font-family: Arial, sans-serif;
         }
         body {
-            background-color: #f4f4f4;
+            /*background-color: #f4f4f4;*/
+            background: #ffffff;
         }
         .hero {
             position: relative;
@@ -94,7 +95,7 @@
             width: 100%;
             padding: 5px;
         }
-         .features {
+        .features {
             background: white;
             padding: 4rem 2rem;
             transform: translateZ(0);
@@ -135,23 +136,29 @@
             color: #666;
             line-height: 1.6;
         }
+        .container, #map, .chatbot, #slider-container {
+            background: #ffffff;
+        }
+
         #map {
             flex: 3;
-            height: 790px;
-            width: 80%;
-            margin-left: 0;
+            height: 800px;
+            max-width: 1200px;
+            margin-top: 10px;
+            margin-left: 20px;
             display: inline-block;
             z-index: 0;
         }
+
         #info-box-container {
             position: absolute;
-            top: 60px; /* Adjust as needed */
+            top: 1250px; /* Adjust as needed */
             left: 10px;
             display: flex;
             flex-direction: column;
             gap: 5px; /* Compact spacing between boxes */
             max-width: 200px; /* Limit width for compactness */
-            z-index: 0; /* Ensure it's above other elements */
+            z-index: 10; /* Ensure it's above other elements */
         }
         #district-dropdown {
             max-height: 150px; /* Limit the height */
@@ -449,7 +456,7 @@
 
     <div class = "container">
         <div id="map"></div>
-        <div id="info-box-container" style="position: absolute; top: 10px; left: 10px;"></div>
+        <div id="info-box-container"></div>
         <div id="info-box"></div>
         <div id="slider-container">
             <label><input type="checkbox" id="temperatureCheckbox" checked
@@ -537,7 +544,7 @@
                 <ul class="chatbox">
                     <li class="chat incoming">
                         <span class="material-symbols-outlined">smart_toy</span>
-                        <p>Hi there! <br> Ask me about cities, crops, or weather scenarios for recommendations.</p>
+                        <p>Hi there! <br>Ask me about cities, crops, or weather scenarios for recommendations.</p>
                     </li>
                 </ul>
                 <div class="chat-input">
